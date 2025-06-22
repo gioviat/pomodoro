@@ -9,20 +9,21 @@
 #define WORK_CYCLES 4
 
 void sleep_min(unsigned int);
+int print_timer(unsigned int);
 
 int main(void) {
     int cycle = 1;
 
     while (true) {
         printf("Start to work!\n...");
-        sleep_min(WORK_MIN);
+        print_timer(WORK_MIN);
         if (cycle % WORK_CYCLES != 0) {
             printf("Short pause!\n");
-            sleep_min(SHORT_PAUSE_MIN);
+            print_timer(SHORT_PAUSE_MIN);
             cycle++;
         } else {
             printf("Long pause!\n");
-            sleep_min(LONG_PAUSE_MIN);
+            print_timer(LONG_PAUSE_MIN);
             cycle++;
         }
     }
@@ -32,4 +33,23 @@ int main(void) {
 
 void sleep_min(unsigned int min) {
     sleep(min * SEC_IN_MIN);
+}
+
+int print_timer(unsigned int total_minutes) {
+    if (total_minutes >= 60) {
+        printf("Provide a time interval (in minutes) < 1 hour\n");
+        return 1;
+    }
+
+    int total_seconds = total_minutes * SEC_IN_MIN;
+    
+    while (total_seconds >= 0) {
+        int shown_min = total_seconds / SEC_IN_MIN;
+        int shown_sec = total_seconds % SEC_IN_MIN; 
+        printf("\r%.2u:%.2u", shown_min, shown_sec);
+        fflush(stdout);
+        sleep(1);
+        total_seconds--;
+    }
+    return 0;
 }
