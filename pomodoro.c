@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 #define WORK_MIN 25
@@ -18,10 +19,12 @@ int main(void) {
         printf("Start to work!\n...");
         print_timer(WORK_MIN);
         if (cycle % WORK_CYCLES != 0) {
+            system("notify-send Pomodoro \"Time for a short pause!\"");
             printf("Short pause!\n");
             print_timer(SHORT_PAUSE_MIN);
             cycle++;
         } else {
+            system("notify-send Pomodoro \"Time for a long pause!\"");
             printf("Long pause!\n");
             print_timer(LONG_PAUSE_MIN);
             cycle++;
@@ -51,5 +54,6 @@ int print_timer(unsigned int total_minutes) {
         sleep(1);
         total_seconds--;
     }
+    printf("\n");
     return 0;
 }
